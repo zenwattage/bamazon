@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/zenwattage/bamazon#readme",
   "dependencies": {
-    "i": "^0.3.6"
+    "i": "^0.3.6",
+    "mysql": "^2.17.1"
   }
 }
