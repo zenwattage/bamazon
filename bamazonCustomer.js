@@ -13,6 +13,15 @@ var connection = mysql.createConnection({
   });
 
 
+  
+// connect to the mysql server and sql database
+connection.connect(function(err) {
+    if (err) throw err;
+    // run the start function after the connection is made to prompt the user
+    start();
+  });
+
+
 
 function mainControl() {
     inquirer
@@ -31,3 +40,27 @@ function mainControl() {
             }
         });
 }
+
+
+
+function getBeverages() {
+    // SELECT * FROM products
+    connection.query("SELECT * FROM products", function(err, results) {
+        if (err) throw err;
+
+    }).then(function(answer) {
+        console.log(answer);
+    })
+}
+
+function getShoes() {
+    connection.query("SELECT * FROM products", function(err, results) {
+        if (err) throw err;
+
+    }).then(function(answer) {
+        console.log(answer);
+    })
+
+}
+
+mainControl();
