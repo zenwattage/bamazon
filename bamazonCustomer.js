@@ -1,6 +1,7 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 
+
 var connection = mysql.createConnection({
     host: "localhost",
     // Your port; if not 3306
@@ -12,55 +13,90 @@ var connection = mysql.createConnection({
     database: "bamazon_db"
   });
 
-
-  
 // connect to the mysql server and sql database
 connection.connect(function(err) {
     if (err) throw err;
     // run the start function after the connection is made to prompt the user
-    start();
-  });
+    //start();
+    
+    console.log("\n connected as id " + connection.threadId + "\n");
+    
+});
+
+//console.log(connection);
+
+//hold user itemID
+var itemID = "";
+//hold user QTY
+var userQty = "";
+
+//FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
+// SELECT * FROM products
+function displayAll() {
+    connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function(err, results) {
+        if (err) throw err;
+        console.log(results);
+
+        firstUserPrompt();
+    })
+}//end displayALL function
+
+displayAll();
+
+function getItemByID(id) {
+connection.query("SELECT * FROM products WHERE item_id="+ id, function(err,res) {
+    if(err) throw err;
+    console.log(res);
+
+    connection.end();
+})
+}//end getItemByID function
 
 
 
-function mainControl() {
+function firstUserPrompt() {
     inquirer
-        .prompt([
+        .prompt(
             {
-                type: "checkbox",
-                message: "Choose an item",
-                choices: [{ name: 'BEVERAGES'}, { name: 'SHOES'}],
-                name: "choice"
+                type: "input",
+                message: "Enter the ID of your desired item: ",
+                name: "itemID"
             }
-        ]).then(function (inquirerResponse) {
-            if (inquirerResponse.choice == "BEVERAGES") {
-                getBeverages();
-            } else if (inquirerResponse.choice == "SHOES") {
-                getShoes();
-            }
+        ).then(function (inquirerResponse) {
+            //console.log(inquirerResponse.itemID);
+            itemID  += inquirerResponse.itemID;
+            console.log(itemID);
+
+            //call next question prompt
+
+            secondUserPrompt();
+           //pass itemID into product query
+            // getItemByID(itemID);
         });
-}
+}//END OF MAIN CONTROL FUNCTION
 
 
+function secondUserPrompt() {
+    inquirer
+        .prompt(
+            {
+                type: "input",
+                message: "How many would you like? ",
+                name: "userQty"
+            }
+        ).then(function (inquirerResponse) {
+            userQty += inquirerResponse.userQty;
+            console.log(userQty);
+            getItemQTY();
+        });
+}// end second userprompt
 
-function getBeverages() {
-    // SELECT * FROM products
-    connection.query("SELECT * FROM products", function(err, results) {
-        if (err) throw err;
-
-    }).then(function(answer) {
-        console.log(answer);
+function getItemQTY() {
+    connection.query("SELECT stock_quantity FROM products WHERE item_id=" + itemID, function(err,res) {
+        if(err) throw(err);
+        console.log(res);
     })
-}
+}//end getItemQTY function
 
-function getShoes() {
-    connection.query("SELECT * FROM products", function(err, results) {
-        if (err) throw err;
 
-    }).then(function(answer) {
-        console.log(answer);
-    })
-
-}
-
-mainControl();
+// MAKE SURE TO ADD getItemByID function back in
