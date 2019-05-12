@@ -95,6 +95,7 @@ function getItemQTY() {
     connection.query("SELECT stock_quantity FROM products WHERE item_id=" + itemID, function(err,res) {
         if(err) throw(err);
         console.log(res);
+        connection.end();
     })
 }//end getItemQTY function
 
