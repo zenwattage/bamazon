@@ -29,6 +29,9 @@ connection.connect(function(err) {
 var itemID = "";
 //hold user QTY
 var userQty = "";
+var itemQty = "";
+
+
 
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
 // SELECT * FROM products
@@ -42,15 +45,6 @@ function displayAll() {
 }//end displayALL function
 
 displayAll();
-
-function getItemByID(id) {
-connection.query("SELECT * FROM products WHERE item_id="+ id, function(err,res) {
-    if(err) throw err;
-    console.log(res);
-
-    connection.end();
-})
-}//end getItemByID function
 
 
 
@@ -91,20 +85,26 @@ function secondUserPrompt() {
         });
 }// end second userprompt
 
+
+function getItemByID(id) {
+    connection.query("SELECT * FROM products WHERE item_id="+ id, function(err,res) {
+        if(err) throw err;
+        console.log(res);
+    
+        connection.end();
+    })
+    }//end getItemByID function
+
+
+
+
 function getItemQTY() {
     connection.query("SELECT stock_quantity FROM products WHERE item_id=" + itemID, function(err,res) {
         if(err) throw(err);
-        console.log(res);
         var currentAmount = res;
-        console.log(currentAmount);
-        console.log(userQty);
-
-        if(currentAmount < userQty) {
-            console.log('Not enough');
-        } else if (currentAmount > userQty) {
-            console.log("sure no problem");
-        }
-
+        console.log("Current amount is" + JSON.stringify(currentAmount));
+        
+        console.log("User qty is : " + userQty);
 
         connection.end();
     })
@@ -112,3 +112,6 @@ function getItemQTY() {
 
 
 // MAKE SURE TO ADD getItemByID function back in
+
+
+//orderPrice = quantity * price
