@@ -86,7 +86,7 @@ function secondUserPrompt() {
             }
         ).then(function (inquirerResponse) {
             userQty += inquirerResponse.userQty;
-            console.log(userQty);
+            //console.log(userQty);
             getItemQTY();
         });
 }// end second userprompt
@@ -95,6 +95,17 @@ function getItemQTY() {
     connection.query("SELECT stock_quantity FROM products WHERE item_id=" + itemID, function(err,res) {
         if(err) throw(err);
         console.log(res);
+        var currentAmount = res;
+        console.log(currentAmount);
+        console.log(userQty);
+
+        if(currentAmount < userQty) {
+            console.log('Not enough');
+        } else if (currentAmount > userQty) {
+            console.log("sure no problem");
+        }
+
+
         connection.end();
     })
 }//end getItemQTY function
