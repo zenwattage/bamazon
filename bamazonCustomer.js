@@ -16,11 +16,7 @@ var connection = mysql.createConnection({
 // connect to the mysql server and sql database
 connection.connect(function (err) {
     if (err) throw err;
-    // run the start function after the connection is made to prompt the user
-    //start();
-
     console.log("\n connected as id " + connection.threadId + "\n");
-
 });
 
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
@@ -63,7 +59,7 @@ function userPrompt() {
             console.log(itemQTY);
 
             //pass itemID to getItemByID;
-
+            getItemByID(itemID,itemQTY);
             //pass itemQTY to getItemQTY;
 
             //itemsRequested(itemID,itemQTY);
@@ -77,9 +73,8 @@ function userPrompt() {
 function getItemByID(id, qty) {
     connection.query("SELECT * FROM products WHERE item_id=" + id, function (err, res) {
         if (err) throw err;
-
         console.log(res);
-        //connection.end();
+        
     });
 }//end getItemByID function
 
