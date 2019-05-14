@@ -63,6 +63,7 @@ function userPrompt() {
             console.log(itemQTY);
 
             //pass itemID to getItemByID;
+
             //pass itemQTY to getItemQTY;
 
             //itemsRequested(itemID,itemQTY);
@@ -73,7 +74,7 @@ function userPrompt() {
 
 
 
-function getItemByID(id) {
+function getItemByID(id, qty) {
     connection.query("SELECT * FROM products WHERE item_id=" + id, function (err, res) {
         if (err) throw err;
 
@@ -81,24 +82,6 @@ function getItemByID(id) {
         //connection.end();
     });
 }//end getItemByID function
-
-
-
-
-function getItemQTY() {
-    connection.query("SELECT * FROM products", function (err, res) {
-        if (err) throw (err);
-        console.log("RESPONSE IS: " + JSON.stringify(res));
-        var currentAmount = JSON.stringify(res.stock_quantity);
-        itemQty += currentAmount;
-        console.log(itemQty);
-        console.log("Current stock amount is: " + currentAmount);
-
-        // console.log("User wants to buy : " + userQty);
-
-        // connection.end();
-    })
-}//end getItemQTY function
 
 
 //orderPrice = quantity * price
