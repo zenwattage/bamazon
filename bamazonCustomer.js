@@ -23,22 +23,13 @@ connection.connect(function (err) {
 
 });
 
-//console.log(connection);
-
-//hold user itemID
-var itemID = "";
-//hold user QTY
-var userQty = "";
-var itemQty = "";
-
-
-
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
 // SELECT * FROM products
 function displayAll() {
     connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function (err, results) {
         if (err) throw err;
         console.log(results);
+        userPrompt();
     })
 }//end displayALL function
 
@@ -46,18 +37,40 @@ displayAll();
 
 
 
-var userPrompts = {
-    idPrompt: {
-        type: "input",
-        message: "Enter the ID of your desired item: ",
-        name: "itemID"
-    },
-    qtyPrompt: {
-        type: "input",
-        message: "Enter the quantity you would like: ",
-        name: "itemQTY"
-    }
-};//END OF USERPROMPT
+function userPrompt() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "Enter the ID of your desired item: ",
+                name: "itemID"
+            },
+            {
+                type: "input",
+                message: "How many would you like? : ",
+                name: "itemQTY"
+            }
+        ]).then(function (inquirerResponse) {
+            //console.log(inquirerResponse.itemID);
+            // if(inquirerResponse == null) {
+            //     console.log("No Item of that ID exists, Try again");
+            //     userPrompt();
+            // }
+
+            var itemID = inquirerResponse.itemID;
+            var itemQTY = inquirerResponse.itemQTY;
+            console.log(itemID);
+            console.log(itemQTY);
+
+            //pass itemID to getItemByID;
+            //pass itemQTY to getItemQTY;
+
+            //itemsRequested(itemID,itemQTY);
+
+        });
+}//END OF MAIN CONTROL FUNCTION
+
+
 
 
 function getItemByID(id) {
@@ -86,9 +99,6 @@ function getItemQTY() {
         // connection.end();
     })
 }//end getItemQTY function
-
-
-// MAKE SURE TO ADD getItemByID function back in
 
 
 //orderPrice = quantity * price
