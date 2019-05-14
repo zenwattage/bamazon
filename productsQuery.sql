@@ -30,4 +30,3 @@ VALUES (1, 'Cucumber Melon LaCroix', 'Beverage', 1.25, 500),
 ;
 
 
-SELECT * FROM products;

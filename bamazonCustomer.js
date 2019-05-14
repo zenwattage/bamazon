@@ -11,16 +11,16 @@ var connection = mysql.createConnection({
     // Your password
     password: "Snowba1!T055",
     database: "bamazon_db"
-  });
+});
 
 // connect to the mysql server and sql database
-connection.connect(function(err) {
+connection.connect(function (err) {
     if (err) throw err;
     // run the start function after the connection is made to prompt the user
     //start();
-    
+
     console.log("\n connected as id " + connection.threadId + "\n");
-    
+
 });
 
 //console.log(connection);
@@ -36,11 +36,9 @@ var itemQty = "";
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
 // SELECT * FROM products
 function displayAll() {
-    connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function(err, results) {
+    connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function (err, results) {
         if (err) throw err;
         console.log(results);
-
-        firstUserPrompt();
     })
 }//end displayALL function
 
@@ -48,65 +46,44 @@ displayAll();
 
 
 
-function firstUserPrompt() {
-    inquirer
-        .prompt(
-            {
-                type: "input",
-                message: "Enter the ID of your desired item: ",
-                name: "itemID"
-            }
-        ).then(function (inquirerResponse) {
-            //console.log(inquirerResponse.itemID);
-            itemID  += inquirerResponse.itemID;
-            console.log(itemID);
-
-            //call next question prompt
-
-            secondUserPrompt();
-           //pass itemID into product query
-            // getItemByID(itemID);
-        });
-}//END OF MAIN CONTROL FUNCTION
-
-
-function secondUserPrompt() {
-    inquirer
-        .prompt(
-            {
-                type: "input",
-                message: "How many would you like? ",
-                name: "userQty"
-            }
-        ).then(function (inquirerResponse) {
-            userQty += inquirerResponse.userQty;
-            //console.log(userQty);
-            getItemQTY();
-        });
-}// end second userprompt
+var userPrompts = {
+    idPrompt: {
+        type: "input",
+        message: "Enter the ID of your desired item: ",
+        name: "itemID"
+    },
+    qtyPrompt: {
+        type: "input",
+        message: "Enter the quantity you would like: ",
+        name: "itemQTY"
+    }
+};//END OF USERPROMPT
 
 
 function getItemByID(id) {
-    connection.query("SELECT * FROM products WHERE item_id="+ id, function(err,res) {
-        if(err) throw err;
+    connection.query("SELECT * FROM products WHERE item_id=" + id, function (err, res) {
+        if (err) throw err;
+
         console.log(res);
-    
-        connection.end();
-    })
-    }//end getItemByID function
+        //connection.end();
+    });
+}//end getItemByID function
 
 
 
 
 function getItemQTY() {
-    connection.query("SELECT stock_quantity FROM products WHERE item_id=" + itemID, function(err,res) {
-        if(err) throw(err);
-        var currentAmount = res;
-        console.log("Current amount is" + JSON.stringify(currentAmount));
-        
-        console.log("User qty is : " + userQty);
+    connection.query("SELECT * FROM products", function (err, res) {
+        if (err) throw (err);
+        console.log("RESPONSE IS: " + JSON.stringify(res));
+        var currentAmount = JSON.stringify(res.stock_quantity);
+        itemQty += currentAmount;
+        console.log(itemQty);
+        console.log("Current stock amount is: " + currentAmount);
 
-        connection.end();
+        // console.log("User wants to buy : " + userQty);
+
+        // connection.end();
     })
 }//end getItemQTY function
 
