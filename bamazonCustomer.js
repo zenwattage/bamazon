@@ -22,17 +22,22 @@ connection.connect(function (err) {
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
 // SELECT * FROM products
 function displayAll() {
-    connection.query("SELECT item_id, product_name, price, stock_quantity FROM products", function (err, results) {
+    //display all items in the products table
+    var allQuery = "SELECT * FROM products";
+
+    connection.query(allQuery, function (err, results) {
         if (err) throw err;
         console.log(results);
+
+        //calling userPrompt function to get user order
         userPrompt();
     })
 }//end displayALL function
 
+//initial display call
 displayAll();
 
-
-
+//get desired itemID and itemQTY from the user
 function userPrompt() {
     inquirer
         .prompt([
@@ -74,6 +79,10 @@ function getItemByID(id, qty) {
     connection.query("SELECT * FROM products WHERE item_id=" + id, function (err, res) {
         if (err) throw err;
         console.log(res);
+
+        //if response is empty or negative
+        //prompt for non empty or neg input
+        
         
     });
 }//end getItemByID function
