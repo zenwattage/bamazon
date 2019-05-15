@@ -49,7 +49,7 @@ function userPrompt() {
             {
                 type: "input",
                 message: "How many would you like? : ",
-                name: "itemQTY"
+                name: "itemOrderQTY"
             }
         ]).then(function (inquirerResponse) {
             //console.log(inquirerResponse.itemID);
@@ -59,13 +59,13 @@ function userPrompt() {
             // }
 
             var itemID = inquirerResponse.itemID;
-            var itemQTY = inquirerResponse.itemQTY;
+            var itemOrderQTY = inquirerResponse.itemOrderQTY;
             console.log(itemID);
-            console.log(itemQTY);
+            console.log(itemOrderQTY);
 
             //pass itemID to getItemByID;
-            //pass itemQTY to getItemQTY;
-            getItemByID(itemID, itemQTY);
+            //pass itemOrderQTY to getItemQTY;
+            getItemByID(itemID, itemOrderQTY);
         });
 }//END OF MAIN CONTROL FUNCTION
 
@@ -80,9 +80,18 @@ function getItemByID(id, qty) {
         //if response is empty or negative
         //prompt for non empty or neg input
         console.log(res[0].price);
-        console.log(res[0].item_id);
-        console.log(res[0].stock_quantity);
+        var price = res[0].price;
+        var itemId = res[0].item_id;
+        var itemStockQty = res[0].stock_quantity;
 
+        if(itemStockQty <= itemOrderQTY){
+            console.log("No problem we have plenty!");
+        }
+
+        var totalPrice = price * itemStockQty;
+
+        console.log("You asked for: " + itemStockQty +" of item: " + itemId + " The total price of your order is: " + totalPrice);
+        
 
     });
 }//end getItemByID function
