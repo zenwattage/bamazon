@@ -72,7 +72,7 @@ function userPrompt() {
 
 
 
-function getItemByID(id, qty) {
+function getItemByID(id, orderQty) {
     connection.query("SELECT * FROM products WHERE item_id=" + id, function (err, res) {
         if (err) throw err;
         console.log(res);
@@ -84,7 +84,7 @@ function getItemByID(id, qty) {
         var itemId = res[0].item_id;
         var itemStockQty = res[0].stock_quantity;
 
-        if(itemStockQty <= itemOrderQTY){
+        if(itemStockQty <= orderQty){
             console.log("No problem we have plenty!");
         }
 
