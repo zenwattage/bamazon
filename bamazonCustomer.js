@@ -64,11 +64,8 @@ function userPrompt() {
             console.log(itemQTY);
 
             //pass itemID to getItemByID;
-            getItemByID(itemID,itemQTY);
             //pass itemQTY to getItemQTY;
-
-            //itemsRequested(itemID,itemQTY);
-
+            getItemByID(itemID, itemQTY);
         });
 }//END OF MAIN CONTROL FUNCTION
 
@@ -82,8 +79,11 @@ function getItemByID(id, qty) {
 
         //if response is empty or negative
         //prompt for non empty or neg input
-        
-        
+        console.log(res[0].price);
+        console.log(res[0].item_id);
+        console.log(res[0].stock_quantity);
+
+
     });
 }//end getItemByID function
 
