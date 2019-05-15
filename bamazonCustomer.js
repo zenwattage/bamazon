@@ -1,7 +1,6 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 
-
 var connection = mysql.createConnection({
     host: "localhost",
     // Your port; if not 3306
@@ -13,11 +12,15 @@ var connection = mysql.createConnection({
     database: "bamazon_db"
 });
 
+
+
 // connect to the mysql server and sql database
 connection.connect(function (err) {
     if (err) throw err;
     console.log("\n connected as id " + connection.threadId + "\n");
 });
+
+
 
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
 // SELECT * FROM products
@@ -31,11 +34,15 @@ function displayAll() {
 
         //calling userPrompt function to get user order
         userPrompt();
-    })
+
+    })//end of connection query
 }//end displayALL function
+
 
 //initial display call
 displayAll();
+
+
 
 //get desired itemID and itemQTY from the user
 function userPrompt() {
@@ -66,14 +73,16 @@ function userPrompt() {
             //pass itemID to getItemByID;
             //pass itemOrderQTY to getItemQTY;
             getItemByID(itemID, itemOrderQTY);
-        });
+        });//end of inquirer prompt
 }//END OF MAIN CONTROL FUNCTION
 
 
 
 
 function getItemByID(id, orderQty) {
-    connection.query("SELECT * FROM products WHERE item_id=" + id, function (err, res) {
+    var idQuery = "SELECT * FROM products WHERE item_id=" + id;
+
+    connection.query(idQuery, function (err, res) {
         if (err) throw err;
         console.log("")
         console.log(res);
@@ -89,27 +98,43 @@ function getItemByID(id, orderQty) {
 
         if(orderQty <= itemStockQty){
             console.log("\n No problem we have plenty! \n");
-            console.log("You asked for: " + orderQty +" of item: " + itemId + "\n The total price of your order is: $" + totalPrice);
+            
 
             //reduce itemStockQty by orderQty
             //update table
+            function updateTable(itemId,newQty){
+                //update table by subtracting newQty from stock_quantity
+                //show total cost of purchase
+                connection.query("UPDATE products SET ? WHERE ?", [
+                    {
+                        stock_quantity: newQty,
+                    },
+                    {
+                        item_id: itemId
+                    }
+                ], function(err, res) {
+                    console.log("Table updated!");
+                    console.log("Your total is: " + totalPrice);
+                    displayAll();
+                    connection.end();
+                })
+            };
             
+            updateTable(itemId,orderQty);
+
+            // console.log("You asked for: " + orderQty +" of item: " + itemId + "\nThe total price of your order is: $" + totalPrice);
 
         } else if (orderQty > itemStockQty) {
             console.log("We dont have that many to sell");
             userPrompt();
         } else {
             console.log("Sorry that input was not understood");
-        }
+        };
 
-
-
-        
-
-        
-
-    });
+    });//end of connection query
 }//end getItemByID function
 
 
-//orderPrice = quantity * price
+
+
+
