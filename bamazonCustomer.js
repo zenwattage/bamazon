@@ -90,7 +90,7 @@ function getItemByID(id, orderQty) {
 
         var totalPrice = price * itemStockQty;
 
-        console.log("You asked for: " + itemStockQty +" of item: " + itemId + " The total price of your order is: " + totalPrice);
+        console.log("You asked for: " + orderQty +" of item: " + itemId + " The total price of your order is: " + totalPrice);
         
 
     });
