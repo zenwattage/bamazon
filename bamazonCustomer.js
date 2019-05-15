@@ -60,8 +60,8 @@ function userPrompt() {
 
             var itemID = inquirerResponse.itemID;
             var itemOrderQTY = inquirerResponse.itemOrderQTY;
-            console.log(itemID);
-            console.log(itemOrderQTY);
+            //console.log(itemID);
+            //console.log(itemOrderQTY);
 
             //pass itemID to getItemByID;
             //pass itemOrderQTY to getItemQTY;
@@ -75,22 +75,37 @@ function userPrompt() {
 function getItemByID(id, orderQty) {
     connection.query("SELECT * FROM products WHERE item_id=" + id, function (err, res) {
         if (err) throw err;
+        console.log("")
         console.log(res);
 
         //if response is empty or negative
         //prompt for non empty or neg input
-        console.log(res[0].price);
+        //console.log(res[0].price);
         var price = res[0].price;
         var itemId = res[0].item_id;
         var itemStockQty = res[0].stock_quantity;
-
-        if(itemStockQty <= orderQty){
-            console.log("No problem we have plenty!");
-        }
-
+        
         var totalPrice = price * itemStockQty;
 
-        console.log("You asked for: " + orderQty +" of item: " + itemId + " The total price of your order is: " + totalPrice);
+        if(orderQty <= itemStockQty){
+            console.log("\n No problem we have plenty! \n");
+            console.log("You asked for: " + orderQty +" of item: " + itemId + "\n The total price of your order is: $" + totalPrice);
+
+            //reduce itemStockQty by orderQty
+            //update table
+            
+
+        } else if (orderQty > itemStockQty) {
+            console.log("We dont have that many to sell");
+            userPrompt();
+        } else {
+            console.log("Sorry that input was not understood");
+        }
+
+
+
+        
+
         
 
     });
