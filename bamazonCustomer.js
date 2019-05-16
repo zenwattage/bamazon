@@ -3,7 +3,7 @@ var mysql = require("mysql");
 
 var connection = mysql.createConnection({
     host: "localhost",
-    // Your port; if not 3306
+    
     port: 3306,
     // Your username
     user: "root",
@@ -22,7 +22,6 @@ connection.connect(function (err) {
 });
 
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
-// SELECT * FROM products
 function displayAll() {
     //display all items in the products table
     var allQuery = "SELECT * FROM products";
@@ -70,9 +69,6 @@ function getItemByID(id, orderQty) {
         console.log("")
         console.log(res);
 
-        //if response is empty or negative
-        //prompt for non empty or neg input
-        //console.log(res[0].price);
         var price = res[0].price;
         var itemId = res[0].item_id;
         var itemStockQty = res[0].stock_quantity;
