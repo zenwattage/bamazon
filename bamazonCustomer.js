@@ -12,19 +12,14 @@ var connection = mysql.createConnection({
     database: "bamazon_db"
 });
 
-
-
 // connect to the mysql server and sql database
 connection.connect(function (err) {
     if (err) throw err;
     console.log("\n connected as id " + connection.threadId + "\n");
 
-
     //initial display call
     displayAll();
 });
-
-
 
 //FUNCTION TO DISPLAY ALL AVAILABLE ITEMS TO USER
 // SELECT * FROM products
@@ -59,24 +54,12 @@ function userPrompt() {
                 name: "itemOrderQTY"
             }
         ]).then(function (inquirerResponse) {
-            //console.log(inquirerResponse.itemID);
-            // if(inquirerResponse == null) {
-            //     console.log("No Item of that ID exists, Try again");
-            //     userPrompt();
-            // }
-
             var itemID = inquirerResponse.itemID;
             var itemOrderQTY = inquirerResponse.itemOrderQTY;
-            //console.log(itemID);
-            //console.log(itemOrderQTY);
 
-            //pass itemID to getItemByID;
-            //pass itemOrderQTY to getItemQTY;
             getItemByID(itemID, itemOrderQTY);
         });//end of inquirer prompt
 }//END OF MAIN CONTROL FUNCTION
-
-
 
 
 function getItemByID(id, orderQty) {
@@ -94,13 +77,8 @@ function getItemByID(id, orderQty) {
         var itemId = res[0].item_id;
         var itemStockQty = res[0].stock_quantity;
 
-        
-
         if (orderQty <= itemStockQty) {
             console.log("\n No problem we have plenty! \n");
-
-
-            //reduce itemStockQty by orderQty
             //update table
             function updateTable(itemId, newQty) {
                 //update table by subtracting newQty from stock_quantity
@@ -119,8 +97,6 @@ function getItemByID(id, orderQty) {
                     console.log("\n Your total is: $" + totalPrice);
                     console.log("=====================================");
 
-
-                    //displayAll();
                     //display all items in the products table
                     var allQuery = "SELECT * FROM products";
 
@@ -134,12 +110,8 @@ function getItemByID(id, orderQty) {
 
                     connection.end();
                 })
-
             };
-
             updateTable(itemId, orderQty);
-
-            // console.log("You asked for: " + orderQty +" of item: " + itemId + "\nThe total price of your order is: $" + totalPrice);
 
         } else if (orderQty > itemStockQty) {
             console.log("\nSorry we dont have that many to sell \n");
