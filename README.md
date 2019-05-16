@@ -12,7 +12,7 @@ Bamazon is a CLI storefront app that will take in orders from customers and depl
 
 
 ## Demo
-[Click here to see a full demo of Liri](https://www.youtube.com/watch?v=WZeTd8xHKsg)
+[Click here to see a full demo of Bamazon](https://www.youtube.com/watch?v=WZeTd8xHKsg)
 
 
 
