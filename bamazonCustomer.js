@@ -94,7 +94,7 @@ function getItemByID(id, orderQty) {
         var itemId = res[0].item_id;
         var itemStockQty = res[0].stock_quantity;
 
-        var totalPrice = price * itemStockQty;
+        
 
         if (orderQty <= itemStockQty) {
             console.log("\n No problem we have plenty! \n");
@@ -113,6 +113,7 @@ function getItemByID(id, orderQty) {
                         item_id: itemId
                     }
                 ], function (err, res) {
+                    var totalPrice = price * orderQty;
                     console.log("=====================================");
                     console.log("Table updated!\n");
                     console.log("\n Your total is: $" + totalPrice);
@@ -142,7 +143,7 @@ function getItemByID(id, orderQty) {
 
         } else if (orderQty > itemStockQty) {
             console.log("\nSorry we dont have that many to sell \n");
-            //userPrompt();
+            userPrompt();
         } else {
             console.log("\nSorry that input was not understood");
         };
