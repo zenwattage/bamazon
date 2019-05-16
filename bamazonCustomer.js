@@ -18,6 +18,10 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw err;
     console.log("\n connected as id " + connection.threadId + "\n");
+
+
+    //initial display call
+    displayAll();
 });
 
 
@@ -32,13 +36,12 @@ function displayAll() {
         if (err) throw err;
         console.log(results);
         //calling userPrompt function to get user order
-        console.log("=====================");
-        
+        console.log("=====================================");
+
         userPrompt();
 
     })//end of connection query
 }//end displayALL function
-
 
 
 //get desired itemID and itemQTY from the user
@@ -90,16 +93,16 @@ function getItemByID(id, orderQty) {
         var price = res[0].price;
         var itemId = res[0].item_id;
         var itemStockQty = res[0].stock_quantity;
-        
+
         var totalPrice = price * itemStockQty;
 
-        if(orderQty <= itemStockQty){
+        if (orderQty <= itemStockQty) {
             console.log("\n No problem we have plenty! \n");
-            
+
 
             //reduce itemStockQty by orderQty
             //update table
-            function updateTable(itemId,newQty){
+            function updateTable(itemId, newQty) {
                 //update table by subtracting newQty from stock_quantity
                 //show total cost of purchase
                 connection.query("UPDATE products SET ? WHERE ?", [
@@ -109,24 +112,37 @@ function getItemByID(id, orderQty) {
                     {
                         item_id: itemId
                     }
-                ], function(err, res) {
-                    console.log("===================================");
+                ], function (err, res) {
+                    console.log("=====================================");
                     console.log("Table updated!\n");
                     console.log("\n Your total is: $" + totalPrice);
-                    console.log("===================================");
-                    displayAll();
+                    console.log("=====================================");
+
+
+                    //displayAll();
+                    //display all items in the products table
+                    var allQuery = "SELECT * FROM products";
+
+                    connection.query(allQuery, function (err, results) {
+                        if (err) throw err;
+                        console.log(results);
+                        //calling userPrompt function to get user order
+                        console.log("=====================================");
+
+                    })//end of connection query
 
                     connection.end();
                 })
+
             };
-            
-            updateTable(itemId,orderQty);
+
+            updateTable(itemId, orderQty);
 
             // console.log("You asked for: " + orderQty +" of item: " + itemId + "\nThe total price of your order is: $" + totalPrice);
 
         } else if (orderQty > itemStockQty) {
             console.log("\nSorry we dont have that many to sell \n");
-            userPrompt();
+            //userPrompt();
         } else {
             console.log("\nSorry that input was not understood");
         };
@@ -136,8 +152,6 @@ function getItemByID(id, orderQty) {
 
 
 
-//initial display call
-displayAll();
 
 
 
