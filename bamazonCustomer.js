@@ -31,16 +31,13 @@ function displayAll() {
     connection.query(allQuery, function (err, results) {
         if (err) throw err;
         console.log(results);
-
         //calling userPrompt function to get user order
+        console.log("=====================");
+        
         userPrompt();
 
     })//end of connection query
 }//end displayALL function
-
-
-//initial display call
-displayAll();
 
 
 
@@ -50,12 +47,12 @@ function userPrompt() {
         .prompt([
             {
                 type: "input",
-                message: "Enter the ID of your desired item: ",
+                message: "\nEnter the ID of your desired item: ",
                 name: "itemID"
             },
             {
                 type: "input",
-                message: "How many would you like? : ",
+                message: "\nHow many would you like? : ",
                 name: "itemOrderQTY"
             }
         ]).then(function (inquirerResponse) {
@@ -113,9 +110,12 @@ function getItemByID(id, orderQty) {
                         item_id: itemId
                     }
                 ], function(err, res) {
-                    console.log("Table updated!");
-                    console.log("Your total is: " + totalPrice);
+                    console.log("===================================");
+                    console.log("Table updated!\n");
+                    console.log("\n Your total is: $" + totalPrice);
+                    console.log("===================================");
                     displayAll();
+
                     connection.end();
                 })
             };
@@ -125,15 +125,19 @@ function getItemByID(id, orderQty) {
             // console.log("You asked for: " + orderQty +" of item: " + itemId + "\nThe total price of your order is: $" + totalPrice);
 
         } else if (orderQty > itemStockQty) {
-            console.log("We dont have that many to sell");
+            console.log("\nSorry we dont have that many to sell \n");
             userPrompt();
         } else {
-            console.log("Sorry that input was not understood");
+            console.log("\nSorry that input was not understood");
         };
 
     });//end of connection query
 }//end getItemByID function
 
+
+
+//initial display call
+displayAll();
 
 
 
