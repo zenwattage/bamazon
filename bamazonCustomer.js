@@ -78,10 +78,11 @@ function getItemByID(id, orderQty) {
             //update table
             function updateTable(itemId, newQty) {
                 //update table by subtracting newQty from stock_quantity
+                var adjustedQty = itemStockQty - newQty;
                 //show total cost of purchase
                 connection.query("UPDATE products SET ? WHERE ?", [
                     {
-                        stock_quantity: newQty,
+                        stock_quantity: adjustedQty,
                     },
                     {
                         item_id: itemId
