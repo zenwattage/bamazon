@@ -3,13 +3,13 @@ var mysql = require("mysql");
 
 var connection = mysql.createConnection({
     host: "localhost",
-    
+
     port: 3306,
     // Your username
     user: "root",
     // Your password
-    password: "Snowba1!T055",
-    database: "bamazon_db"
+    password: "PASSWORD_HERE",
+    database: "DB_NAME_HERE"
 });
 
 // connect to the mysql server and sql database
